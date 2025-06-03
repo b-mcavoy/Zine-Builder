@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Home</title>
+    
+</head>
+<body onload = "showProjects();">
+    <div class="header">
+        <h1>Projects</h1>
+    </div>
+    <div id="projectNamePicker">
+        <label id = "inputText">Project Name:</label><br>
+        <input id = enterProjectName></input>
+        <button id = "submitButton" onclick="newProject();document.getElementById('enterProjectName').value = ''; hideInput();">submit</button>
+    </div>
+        <div id = allProjects>
+
+        </div>
+    <button id = "logoutButton" onclick="logout();">Logout</button>
+    <script type="module" src="script.js"></script>
+    <script type="module"> 
+        import {newProject, displayInput, showProjects, hideInput, displayNewProjectButton, checkLogin, logout} from './script.js';
+        window.newProject = newProject;
+        window.displayInput = displayInput;
+        window.showProjects = showProjects;
+        window.hideInput = hideInput;
+        window.displayNewProjectButton = displayNewProjectButton;
+        window.checkLogin = checkLogin;
+        window.logout = logout;
+    </script>
+</body>
+</html>

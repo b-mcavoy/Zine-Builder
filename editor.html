@@ -1,0 +1,242 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Zine Editor</title>
+        <link rel="icon" type="image/x-icon" href=images/logo.png>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="css/editor.css" media="screen">
+        <link rel="stylesheet" href="css/format.css" media="screen">
+        <script type="module" src="script.js"></script>
+    </head>
+    <body onload="loadProject(); setProjectName();">
+        <div class="top-bar">
+            <div class = "project-title" id="project-title" contenteditable="true"></div>
+            <div class = menu>
+                <button id="home" class = "menubutton" onclick = "window.location.href = 'homepage.html'" title="Home">
+                    <span class="material-symbols-outlined">
+                        home
+                    </span>
+                </button>
+                <button id="save" class = "menubutton" onclick ="saveProject();" title="Save Project">
+                    <span class="material-symbols-outlined">
+                        save
+                    </span>
+                </button>
+                <button id="print" class = "menubutton" onclick="location.href='print.html'">
+                    <span class="material-symbols-outlined">
+                        print
+                    </span>
+                </button>
+                <button id="delete" class = "menubutton" onclick="deleteProject();" title="Delete Project">
+                    <span class="material-symbols-outlined">
+                        delete
+                    </span>
+                </button>
+                <button type="button" class="menubutton" data-element="bold" title="Bold">
+                    <span class="material-symbols-outlined">
+                        format_bold
+                    </span>
+                </button>
+                <button type="button" class="menubutton" data-element="italic" title="Italicize">
+                    <span class="material-symbols-outlined">
+                        format_italic
+                    </span>
+                </button>
+                <button type="button" class="menubutton" data-element="underline" title="Underline">
+                    <span class="material-symbols-outlined">
+                        format_underlined
+                    </span>
+                </button>
+<!--                 <button type="button" class="menubutton" title="Font Color" onclick="editColor()">
+                    <span class="material-symbols-outlined">
+                        format_color_text
+                    </span>            
+                </button> -->
+                <select id="fontSize" >
+                    <option value="10">10px</option>
+                    <option value="12">12px</option>
+                    <option value="14">14px</option>
+                    <option value="18">18px</option>
+                    <option value="24">24px</option>
+                    <option value="32">32px</option>
+                    <option value="38">38px</option>
+                </select>
+<!--                 <button type="button" class="menubutton" data-element="insertUnorderedList" title="Bulleted List">
+                    <span class="material-symbols-outlined">
+                        format_list_bulleted
+                    </span>            
+                </button>
+                <button type="button" class="menubutton" data-element="insertOrderedList" title="Numbered List">
+                    <span class="material-symbols-outlined">
+                        format_list_numbered
+                    </span>            
+                </button> -->
+                <button type="button" class="menubutton" data-element="justifyLeft" title="Justify Left">
+                    <span class="material-symbols-outlined">
+                        format_align_left
+                    </span>            
+                </button>
+                <button type="button" class="menubutton" data-element="justifyCenter" title="Justify Center">
+                    <span class="material-symbols-outlined">
+                        format_align_center
+                    </span>            
+                </button>
+                <button type="button" class="menubutton" data-element="justifyRight" title="Justify Right">
+                    <span class="material-symbols-outlined">
+                        format_align_right
+                    </span>            
+                </button>
+                <button type="button" class="menubutton" data-element="justifyFull" title="Justify Full">
+                    <span class="material-symbols-outlined">
+                        format_align_justify
+                    </span>            
+                </button>
+
+            </div>
+        </div>
+        
+        <div class="container" id="container">
+            
+            <div id="container-1" class="pages-container">
+                <div class="delete-section">
+                </div>
+
+                <div class="editor">
+                    
+                    
+            
+
+                    <div class="page-0" id ="front">
+                    
+                    </div>
+                </div>
+
+            
+                <div class="editor">
+                    <div class="page-0" id ="back">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class = contentContainer id = "contentContainer">
+            <span class="content" id="myPopup">
+                <anchor class = "format-1" onclick = "closeFormatPopup(); changeFormat('page-1');"><img id = formatButtonImage src = "images/format1.png"></img></anchor> 
+                <anchor class = "format-2" onclick = "closeFormatPopup(); changeFormat('page-2');"><img id = formatButtonImage src = "images/format2.png"></img></anchor> 
+                <anchor class = "format-3" onclick = "closeFormatPopup(); changeFormat('page-3');"><img id = formatButtonImage src = "images/format3.png"></img></anchor> 
+                <anchor class = "format-4" onclick = "closeFormatPopup(); changeFormat('page-4');"><img id = formatButtonImage src = "images/format4.png"></img></anchor> 
+                <anchor class = "format-5" onclick = "closeFormatPopup(); changeFormat('page-5');"><img id = formatButtonImage src = "images/format5.png"></img></anchor> 
+                <anchor class = "format-0" onclick = "closeFormatPopup(); changeFormat('page-0');"><img id = formatButtonImage src = "images/format0.png"></img></anchor> 
+            </span>
+        </div>
+        <div class="bottom-bar">
+            <button class = "pages-button" onclick="setTimeout(addPages,80); setTimeout(scrollBottom,80); setTimeout(makeNewPageDocs,80) ">
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+            </button>
+        </div>
+        
+<script>
+            const elements = document.querySelectorAll('.menubutton');
+
+            //on click events for formatting buttons
+            elements.forEach(element => {
+                element.addEventListener('click', () => {
+                    
+                    //get dataelement command from buttton
+                    let command = element.dataset['element'];
+
+                    //execute the dataelement command of button
+                    document.execCommand(command);
+                });
+            });
+
+            var myEvent = window.attachEvent || window.addEventListener;
+            var chkevent = window.attachEvent ? 'onbeforeunload' : 'beforeunload'; /// make IE7, IE8 compitable
+
+            //prevent default event on unload (reminder to save before unloading page)
+            myEvent(chkevent, function(e) { // For >=IE7, Chrome, Firefox
+                var confirmationMessage = 'Are you sure to leave the page?';  // a space
+                (e || window.event).returnValue = confirmationMessage;
+                return confirmationMessage;
+            });
+
+            //onchange for fontSize adjuster. Calls fontSize method with a param: font size in pxs
+            document.getElementById("fontSize").onchange = function()
+            {
+
+            //calls with a different param depending on the value of the font size adjuster.
+            if(this.value === "10")
+                {
+                    fontSize(10);
+                }
+                else if(this.value == "12")
+                {
+                    fontSize(12);
+                }
+                else if(this.value == "14")
+                {
+                    fontSize(14);
+                }
+                else if(this.value == "18")
+                {
+                    fontSize(18);
+                }
+                else if(this.value == "24")
+                {
+                    fontSize(24);
+                }
+                else if(this.value == "28")
+                {
+                    fontSize(28);
+                }
+                else if(this.value == "32")
+                {
+                    fontSize(32);
+                }
+                else if(this.value == "38")
+                {
+                    fontSize(38);
+                }
+            };
+        </script>
+
+        <script type="module">
+            import {
+                saveProject, 
+                loadProject, 
+                addPages, 
+                deleteProject, 
+                chooseFormat, 
+                scrollBottom, 
+                closeFormatPopup, 
+                changeFormat, 
+                setProjectName, 
+                deletePages, 
+                fontSize,
+                makeNewPageDocs 
+                
+            } from './script.js';
+            window.saveProject = saveProject;
+            window.loadProject = loadProject;
+            window.addPages = addPages;
+            window.scrollBottom = scrollBottom;
+            window.deleteProject = deleteProject;
+            window.chooseFormat = chooseFormat;
+            window.closeFormatPopup  = closeFormatPopup;
+            window.changeFormat = changeFormat;
+            window.setProjectName = setProjectName;
+            window.deletePages = deletePages;
+            window.fontSize = fontSize;
+            window.makeNewPageDocs = makeNewPageDocs;
+
+
+
+        </script>
+    </body>
